@@ -1,32 +1,22 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: sa
-    password: null
-  tomcat:
-    max-wait: 20000
-    max-active: 50
-    max-idle: 20
-    min-idle: 15
+    url: jdbc:postgresql://localhost:5432/mybase
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        format_sql: true
-        id:
-          new_generator_mappings: false
+      ddl-auto: update
 
 server:
-   port: 8080 # This is the default port anyway, but you can change it here
+  port: 8080
 
 security:
   jwt:
     token:
-      secret-key: secret-key
-      expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
-      
+      secret-key: keyf
+      expire-length: 300000
+
 UserController:
   signin: Authenticates user and returns its JWT token.
   signup: Creates user and returns its JWT token
