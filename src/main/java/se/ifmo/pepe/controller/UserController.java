@@ -2,23 +2,19 @@ package se.ifmo.pepe.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import se.ifmo.pepe.dto.TokenDTO;
 import se.ifmo.pepe.dto.UserDataDTO;
 import se.ifmo.pepe.dto.UserResponseDTO;
 import se.ifmo.pepe.model.User;
@@ -35,17 +31,18 @@ public class UserController {
   @Autowired
   private ModelMapper modelMapper;
 
+  @CrossOrigin
   @PostMapping("/signin")
   @ApiOperation(value = "${UserController.signin}")
   @ApiResponses(value = {//
       @ApiResponse(code = 400, message = "Something went wrong"), //
       @ApiResponse(code = 422, message = "Invalid username/password supplied")})
-  public String login(//
-      @ApiParam("Username") @RequestParam String username, //
-      @ApiParam("Password") @RequestParam String password) {
-    return userService.signin(username, password);
+  public ResponseEntity<TokenDTO> login(//
+                                        @ApiParam("Password") @RequestBody UserDataDTO user) {
+    return userService.signin(modelMapper.map(user, User.class).getUsername(), modelMapper.map(user, User.class).getPassword());
   }
 
+  @CrossOrigin
   @PostMapping("/signup")
   @ApiOperation(value = "${UserController.signup}")
   @ApiResponses(value = {//
@@ -53,10 +50,11 @@ public class UserController {
       @ApiResponse(code = 403, message = "Access denied"), //
       @ApiResponse(code = 422, message = "Username is already in use"), //
       @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-  public String signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
+  public ResponseEntity<TokenDTO> signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
     return userService.signup(modelMapper.map(user, User.class));
   }
 
+  @CrossOrigin
   @DeleteMapping(value = "/{username}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ApiOperation(value = "${UserController.delete}")
@@ -70,6 +68,7 @@ public class UserController {
     return username;
   }
 
+  @CrossOrigin
   @GetMapping(value = "/{username}")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @ApiOperation(value = "${UserController.search}", response = UserResponseDTO.class)
@@ -82,6 +81,7 @@ public class UserController {
     return modelMapper.map(userService.search(username), UserResponseDTO.class);
   }
 
+  @CrossOrigin
   @GetMapping(value = "/me")
   @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
   @ApiOperation(value = "${UserController.me}", response = UserResponseDTO.class)
@@ -93,6 +93,7 @@ public class UserController {
     return modelMapper.map(userService.whoami(req), UserResponseDTO.class);
   }
 
+  @CrossOrigin
   @GetMapping("/refresh")
   @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
   public String refresh(HttpServletRequest req) {

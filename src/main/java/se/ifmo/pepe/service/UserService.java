@@ -4,16 +4,23 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import se.ifmo.pepe.dto.TokenDTO;
 import se.ifmo.pepe.exception.CustomException;
+import se.ifmo.pepe.model.Role;
 import se.ifmo.pepe.model.User;
 import se.ifmo.pepe.repository.UserRepository;
 import se.ifmo.pepe.security.JwtTokenProvider;
+import springfox.documentation.service.ResponseMessage;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @Service
 public class UserService {
@@ -30,20 +37,23 @@ public class UserService {
   @Autowired
   private AuthenticationManager authenticationManager;
 
-  public String signin(String username, String password) {
+  public ResponseEntity<TokenDTO> signin(String username, String password) {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-      return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+      String token = jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
+      return new ResponseEntity<>(new TokenDTO(token), HttpStatus.OK);
     } catch (AuthenticationException e) {
       throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
     }
   }
 
-  public String signup(User user) {
+  public ResponseEntity<TokenDTO> signup(User user) {
     if (!userRepository.existsByUsername(user.getUsername())) {
       user.setPassword(passwordEncoder.encode(user.getPassword()));
+      user.setRoles(new ArrayList<Role>(Arrays.asList(Role.ROLE_CLIENT)));
       userRepository.save(user);
-      return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+      String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+      return new ResponseEntity<>(new TokenDTO(token), HttpStatus.OK);
     } else {
       throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
     }

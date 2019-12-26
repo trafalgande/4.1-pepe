@@ -6,9 +6,9 @@ import se.ifmo.pepe.model.Point;
 @Component
 public class Plot {
     public boolean check(double x, double y, double r) {
-        boolean triangle = x <= 0 && y >= 0 && y <= (x + r) / 2;
-        boolean square = x >= 0 && y >= 0 && x <= r && y <= r / 2;
-        boolean sector = x >= 0 && y <= 0 && Math.sqrt(x * x + y * y) <= r / 2;
+        boolean triangle = x <= 0 && y >= 0 && y <= x / 2 + r / 2;
+        boolean square = x >= -r && x <= 0 && y >= -r / 2 && y <= 0;
+        boolean sector = x >= 0 && y <= 0 && (x * x + y * y) <= (r / 2 * r / 2);
         return triangle || square || sector;
     }
 

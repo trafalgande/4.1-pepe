@@ -24,9 +24,6 @@ public class PointService {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private Plot plot;
 
 

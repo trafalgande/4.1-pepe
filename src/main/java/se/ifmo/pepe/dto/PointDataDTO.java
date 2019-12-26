@@ -15,7 +15,5 @@ public class PointDataDTO {
     private Double y;
     @ApiModelProperty(position = 2)
     private Double r;
-    @ApiModelProperty(position = 3)
-    private Boolean result;
 }
 

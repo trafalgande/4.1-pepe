@@ -16,21 +16,20 @@ import se.ifmo.pepe.service.PointService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-
+@CrossOrigin
 @RestController
-@RequestMapping("/points")
+@RequestMapping(value = "/points")
 public class PointController {
 
     @Autowired
     private PointService pointService;
 
     @Autowired
-    private PointRepository pointRepository;
-
-    @Autowired
     private ModelMapper modelMapper;
 
+    @CrossOrigin
     @PostMapping
     public String addPoint(HttpServletRequest req, @RequestBody PointDataDTO point) {
         try {
@@ -41,17 +40,20 @@ public class PointController {
         }
     }
 
+    @CrossOrigin
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Point> showAllPoints() {
         return pointService.showAllPoints();
     }
 
+    @CrossOrigin
     @GetMapping("/currentpoints")
     public List<Point> showPointsDedicatedToCurrentUser(HttpServletRequest req){
         return pointService.showPointsDedicatedToCurrentUser(req);
     }
 
+    @CrossOrigin
     @PostMapping("/update")
     public List<Point> updatePoints(HttpServletRequest req, Double r) {
         return pointService.updatePoints(req,r);
