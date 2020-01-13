@@ -83,5 +83,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     firewall.setAllowUrlEncodedDoubleSlash(true);
     return firewall;
   }
-
 }

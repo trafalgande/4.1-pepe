@@ -2,8 +2,5 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/docker-compose.yml" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/postgres/Dockerfile" charset="windows-1251" />
-    <file url="file://$PROJECT_DIR$/src/main/java/se/ifmo/pepe/dto/TokenDTO.java" charset="windows-1251" />
   </component>
 </project>

@@ -33,5 +33,4 @@ public class MyUserDetails implements UserDetailsService {
         .disabled(false)//
         .build();
   }
-
 }

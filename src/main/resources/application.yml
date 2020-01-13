@@ -1,12 +1,15 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/mybase
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://localhost:5432/studs
+    username: s263068
+    password: zet761
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 
 server:
