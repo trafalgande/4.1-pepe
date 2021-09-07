@@ -1,7 +1,5 @@
 package se.ifmo.pepe.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +8,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import se.ifmo.pepe.dto.TokenDTO;
-import se.ifmo.pepe.exception.CustomException;
+import se.ifmo.pepe.configuration.security.JwtTokenProvider;
 import se.ifmo.pepe.domain.Role;
 import se.ifmo.pepe.domain.User;
+import se.ifmo.pepe.dto.TokenDTO;
+import se.ifmo.pepe.exception.CustomException;
 import se.ifmo.pepe.repository.UserRepository;
-import se.ifmo.pepe.configuration.security.JwtTokenProvider;
 import se.ifmo.pepe.service.facade.UserFacade;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +44,7 @@ public class UserFacadeImpl implements UserFacade {
   public ResponseEntity<TokenDTO> signup(User user) {
     if (!userRepository.existsByUsername(user.getUsername())) {
       user.setPassword(passwordEncoder.encode(user.getPassword()));
-      user.setRoles(new ArrayList<Role>(Arrays.asList(Role.ROLE_CLIENT)));
+      user.setRoles(new ArrayList<>(Collections.singletonList(Role.ROLE_CLIENT)));
       userRepository.save(user);
       String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
       return new ResponseEntity<>(new TokenDTO(token), HttpStatus.OK);

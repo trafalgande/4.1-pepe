@@ -1,10 +1,7 @@
 package se.ifmo.pepe.repository;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import se.ifmo.pepe.model.User;
+import se.ifmo.pepe.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 

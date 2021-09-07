@@ -1,9 +1,9 @@
-package se.ifmo.pepe.model;
+package se.ifmo.pepe.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-  ROLE_ADMIN, ROLE_CLIENT;
+    ROLE_CLIENT;
 
   public String getAuthority() {
     return name();
