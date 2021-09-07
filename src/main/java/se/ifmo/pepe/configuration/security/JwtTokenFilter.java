@@ -1,4 +1,4 @@
-package se.ifmo.pepe.security;
+package se.ifmo.pepe.configuration.security;
 
 import java.io.IOException;
 

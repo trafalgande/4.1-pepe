@@ -1,4 +1,4 @@
-package se.ifmo.pepe.security;
+package se.ifmo.pepe.configuration.security;
 
 import java.util.Base64;
 import java.util.Date;
@@ -54,11 +54,11 @@ public class JwtTokenProvider {
     Date now = new Date();
     Date validity = new Date(now.getTime() + validityInMilliseconds);
 
-    return Jwts.builder()//
-        .setClaims(claims)//
-        .setIssuedAt(now)//
-        .setExpiration(validity)//
-        .signWith(SignatureAlgorithm.HS256, secretKey)//
+    return Jwts.builder()
+        .setClaims(claims)
+        .setIssuedAt(now)
+        .setExpiration(validity)
+        .signWith(SignatureAlgorithm.HS256, secretKey)
         .compact();
   }
 

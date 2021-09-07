@@ -1,30 +1,24 @@
 package se.ifmo.pepe.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import se.ifmo.pepe.model.Point;
 import se.ifmo.pepe.plot.Plot;
 import se.ifmo.pepe.repository.PointRepository;
 import se.ifmo.pepe.repository.UserRepository;
-import se.ifmo.pepe.security.JwtTokenProvider;
+import se.ifmo.pepe.configuration.security.JwtTokenProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PointService {
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PointRepository pointRepository;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    private Plot plot;
+    private final UserRepository userRepository;
+    private final PointRepository pointRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final Plot plot;
 
 
    public void addPoint(HttpServletRequest req, Point point){
