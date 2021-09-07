@@ -2,7 +2,7 @@ package se.ifmo.pepe.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,29 +13,25 @@ import org.springframework.stereotype.Service;
 
 import se.ifmo.pepe.dto.TokenDTO;
 import se.ifmo.pepe.exception.CustomException;
-import se.ifmo.pepe.model.Role;
-import se.ifmo.pepe.model.User;
+import se.ifmo.pepe.domain.Role;
+import se.ifmo.pepe.domain.User;
 import se.ifmo.pepe.repository.UserRepository;
 import se.ifmo.pepe.configuration.security.JwtTokenProvider;
+import se.ifmo.pepe.service.facade.UserFacade;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 @Service
-public class UserService {
+@RequiredArgsConstructor
+public class UserFacadeImpl implements UserFacade {
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final AuthenticationManager authenticationManager;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
-  @Autowired
-  private JwtTokenProvider jwtTokenProvider;
-
-  @Autowired
-  private AuthenticationManager authenticationManager;
-
+  @Override
   public ResponseEntity<TokenDTO> signin(String username, String password) {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -46,6 +42,7 @@ public class UserService {
     }
   }
 
+  @Override
   public ResponseEntity<TokenDTO> signup(User user) {
     if (!userRepository.existsByUsername(user.getUsername())) {
       user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -58,10 +55,12 @@ public class UserService {
     }
   }
 
+  @Override
   public void delete(String username) {
     userRepository.deleteByUsername(username);
   }
 
+  @Override
   public User search(String username) {
     User user = userRepository.findByUsername(username);
     if (user == null) {
@@ -70,12 +69,13 @@ public class UserService {
     return user;
   }
 
+  @Override
   public User whoami(HttpServletRequest req) {
     return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
   }
 
+  @Override
   public String refresh(String username) {
     return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getRoles());
   }
-
 }

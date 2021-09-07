@@ -16,15 +16,15 @@ import io.swagger.annotations.ApiResponses;
 import se.ifmo.pepe.dto.TokenDTO;
 import se.ifmo.pepe.dto.UserDataDTO;
 import se.ifmo.pepe.dto.UserResponseDTO;
-import se.ifmo.pepe.model.User;
-import se.ifmo.pepe.service.UserService;
+import se.ifmo.pepe.domain.User;
+import se.ifmo.pepe.service.facade.UserFacade;
 
 @RestController
 @RequestMapping("/users")
 @Api(tags = "users")
 @RequiredArgsConstructor
 public class UserController {
-  private final UserService userService;
+  private final UserFacade userFacade;
   private final ModelMapper modelMapper;
 
   @CrossOrigin
@@ -35,7 +35,7 @@ public class UserController {
       @ApiResponse(code = 422, message = "Invalid username/password supplied")})
   public ResponseEntity<TokenDTO> login(
                                         @ApiParam("Password") @RequestBody UserDataDTO user) {
-    return userService.signin(modelMapper.map(user, User.class).getUsername(), modelMapper.map(user, User.class).getPassword());
+    return userFacade.signin(modelMapper.map(user, User.class).getUsername(), modelMapper.map(user, User.class).getPassword());
   }
 
   @CrossOrigin
@@ -47,7 +47,7 @@ public class UserController {
       @ApiResponse(code = 422, message = "Username is already in use"),
       @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
   public ResponseEntity<TokenDTO> signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
-    return userService.signup(modelMapper.map(user, User.class));
+    return userFacade.signup(modelMapper.map(user, User.class));
   }
 
   @CrossOrigin
@@ -60,7 +60,7 @@ public class UserController {
       @ApiResponse(code = 404, message = "The user doesn't exist"),
       @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
   public String delete(@ApiParam("Username") @PathVariable String username) {
-    userService.delete(username);
+    userFacade.delete(username);
     return username;
   }
 
@@ -74,7 +74,7 @@ public class UserController {
       @ApiResponse(code = 404, message = "The user doesn't exist"),
       @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
   public UserResponseDTO search(@ApiParam("Username") @PathVariable String username) {
-    return modelMapper.map(userService.search(username), UserResponseDTO.class);
+    return modelMapper.map(userFacade.search(username), UserResponseDTO.class);
   }
 
   @CrossOrigin
@@ -86,14 +86,14 @@ public class UserController {
       @ApiResponse(code = 403, message = "Access denied"),
       @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
   public UserResponseDTO whoami(HttpServletRequest req) {
-    return modelMapper.map(userService.whoami(req), UserResponseDTO.class);
+    return modelMapper.map(userFacade.whoami(req), UserResponseDTO.class);
   }
 
   @CrossOrigin
   @GetMapping("/refresh")
   @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
   public String refresh(HttpServletRequest req) {
-    return userService.refresh(req.getRemoteUser());
+    return userFacade.refresh(req.getRemoteUser());
   }
 
 }
