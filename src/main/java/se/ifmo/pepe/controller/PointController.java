@@ -6,10 +6,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import se.ifmo.pepe.domain.Point;
 import se.ifmo.pepe.dto.PointDataDTO;
 import se.ifmo.pepe.exception.CustomException;
-import se.ifmo.pepe.domain.Point;
-import se.ifmo.pepe.service.PointFacade;
+import se.ifmo.pepe.service.facade.PointFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

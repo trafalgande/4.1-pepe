@@ -2,18 +2,19 @@ package se.ifmo.pepe.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import se.ifmo.pepe.configuration.security.JwtTokenProvider;
 import se.ifmo.pepe.domain.Point;
 import se.ifmo.pepe.domain.plot.Plot;
 import se.ifmo.pepe.repository.PointRepository;
 import se.ifmo.pepe.repository.UserRepository;
-import se.ifmo.pepe.configuration.security.JwtTokenProvider;
+import se.ifmo.pepe.service.facade.PointFacade;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PointFacade implements se.ifmo.pepe.service.facade.PointFacade {
+public class PointFacadeImpl implements PointFacade {
     private final UserRepository userRepository;
     private final PointRepository pointRepository;
     private final JwtTokenProvider jwtTokenProvider;

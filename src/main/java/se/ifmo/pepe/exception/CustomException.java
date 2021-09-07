@@ -14,11 +14,9 @@ public class CustomException extends RuntimeException {
   private final String message;
   private final HttpStatus httpStatus;
 
-
   @Override
   public String getMessage() {
     return message;
   }
-
 
 }
