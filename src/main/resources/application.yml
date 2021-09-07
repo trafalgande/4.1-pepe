@@ -1,13 +1,15 @@
 spring:
+  profiles:
+    active: "!local"
   datasource:
     url: jdbc:postgresql://localhost:5432/studs
-    username: *
-    password: *
+    username: secret
+    password: secret
 
   jpa:
     hibernate:
       ddl-auto: update
-
+---
 server:
   port: 8080
 

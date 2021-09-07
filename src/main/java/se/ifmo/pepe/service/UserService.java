@@ -16,8 +16,7 @@ import se.ifmo.pepe.exception.CustomException;
 import se.ifmo.pepe.model.Role;
 import se.ifmo.pepe.model.User;
 import se.ifmo.pepe.repository.UserRepository;
-import se.ifmo.pepe.security.JwtTokenProvider;
-import springfox.documentation.service.ResponseMessage;
+import se.ifmo.pepe.configuration.security.JwtTokenProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;

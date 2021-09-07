@@ -1,4 +1,4 @@
-package se.ifmo.pepe.security;
+package se.ifmo.pepe.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,14 +23,14 @@ public class MyUserDetails implements UserDetailsService {
       throw new UsernameNotFoundException("User '" + username + "' not found");
     }
 
-    return org.springframework.security.core.userdetails.User//
-        .withUsername(username)//
-        .password(user.getPassword())//
-        .authorities(user.getRoles())//
-        .accountExpired(false)//
-        .accountLocked(false)//
-        .credentialsExpired(false)//
-        .disabled(false)//
+    return org.springframework.security.core.userdetails.User
+        .withUsername(username)
+        .password(user.getPassword())
+        .authorities(user.getRoles())
+        .accountExpired(false)
+        .accountLocked(false)
+        .credentialsExpired(false)
+        .disabled(false)
         .build();
   }
 }

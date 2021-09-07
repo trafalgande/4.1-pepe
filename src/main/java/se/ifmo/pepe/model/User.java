@@ -1,19 +1,17 @@
 package se.ifmo.pepe.model;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity(name = "users")
 public class User {
 
@@ -31,4 +29,17 @@ public class User {
   @ElementCollection(fetch = FetchType.EAGER)
   List<Role> roles;
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+    User user = (User) o;
+
+    return Objects.equals(id, user.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return 562048007;
+  }
 }
