@@ -1,7 +1,7 @@
-package se.ifmo.pepe.plot;
+package se.ifmo.pepe.domain.plot;
 
 import org.springframework.stereotype.Component;
-import se.ifmo.pepe.model.Point;
+import se.ifmo.pepe.domain.Point;
 
 @Component
 public class Plot {

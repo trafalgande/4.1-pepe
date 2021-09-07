@@ -1,4 +1,4 @@
-package se.ifmo.pepe.security;
+package se.ifmo.pepe.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
+import se.ifmo.pepe.configuration.security.JwtTokenFilterConfigurer;
+import se.ifmo.pepe.configuration.security.JwtTokenProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -34,12 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     // Entry points
-    http.authorizeRequests()//
-        .antMatchers("/users/signin").permitAll()//
-        .antMatchers("/users/signup").permitAll()//
+    http.authorizeRequests()
+        .antMatchers("/users/signin").permitAll()
+        .antMatchers("/users/signup").permitAll()
             .antMatchers(HttpMethod.GET,"/points/**").authenticated()
             .antMatchers(HttpMethod.POST,"/points/**").authenticated()
-        // Disallow everything else..
+        // Disallow everything else.
         .anyRequest().permitAll();
 
     // If a user try to access a resource without having enough permissions
@@ -53,13 +55,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  public void configure(WebSecurity web) throws Exception {
+  public void configure(WebSecurity web) {
     // Allow swagger to be accessed without authentication
-    web.ignoring().antMatchers("/v2/api-docs")//
-        .antMatchers("/swagger-resources/**")//
-        .antMatchers("/swagger-ui.html")//
-        .antMatchers("/configuration/**")//
-        .antMatchers("/webjars/**")//
+    web.ignoring().antMatchers("/v2/api-docs")
+        .antMatchers("/swagger-resources/**")
+        .antMatchers("/swagger-ui.html")
+        .antMatchers("/configuration/**")
+        .antMatchers("/webjars/**")
         .antMatchers("/public");
     //web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
   }

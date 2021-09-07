@@ -1,8 +1,8 @@
 package se.ifmo.pepe.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import se.ifmo.pepe.model.Point;
-import se.ifmo.pepe.model.User;
+import se.ifmo.pepe.domain.Point;
+import se.ifmo.pepe.domain.User;
 
 import java.util.List;
 
